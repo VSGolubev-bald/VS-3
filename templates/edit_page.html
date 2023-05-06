@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Edit Page</h1>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="tag">Tag:</label>
+      <input type="text" class="form-control" name="tag" value="{{ page.tag }}" readonly>
+    </div>
+    <div class="form-group">
+      <label for="title">Title:</label>
+      <input type="text" class="form-control" name="title" value="{{ page.title }}" >
+    </div>
+    <div class="form-group">
+      <label for="description">Description:</label>
+      <textarea class="form-control" name="description">{{ page.description }}</textarea>
+    </div>
+    <div class="form-group">
+      <label for="keywords">Keywords:</label>
+      <input type="text" class="form-control" name="keywords" value="{{ page.keywords }}">
+    </div>
+    <div class="form-group">
+      <label for="body">Body:</label>
+      <textarea class="form-control" name="body">{{ page.body }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="files">Files:</label>
+      {% if page.files %}
+      <ul>
+        {% for file in page.files %}
+        <li>{{ file.filename }} <a href="{{ url_for('delete_file', tag=page.tag, filename=file.filename) }}">Delete</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      <input type="file" class="form-control-file" name="files">
+      <small class="form-text text-muted">Upload a new file to add files.</small>
+    </div>
+  <br>
+{% if user.account_type == 1 or user.account_type == 2 %}
+  		<h2>Read Access:</h2>
+		<label for="read_users">Users:</label>
+		<select id="read_users" name="read_users[]" multiple>
+			{% for user in all_users %}
+				{% if user in read_users %}
+					<option value="{{ user }}" selected>{{ user }}</option>
+				{% else %}
+					<option value="{{ user }}">{{ user }}</option>
+				{% endif %}
+			{% endfor %}
+		</select><br><br>
+        <h2>Write Access:</h2>
+		<label for="write_users">Users:</label>
+		<select id="write_users" name="write_users[]" multiple>
+			{% for user in all_users %}
+				{% if user in write_users %}
+					<option value="{{ user }}" selected>{{ user }}</option>
+				{% else %}
+					<option value="{{ user }}">{{ user }}</option>
+				{% endif %}
+			{% endfor %}
+		</select><br><br>
+    <button type="submit" class="btn btn-primary">Update Page</button>
+{% endif %}
+  </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Edit User</h1>
+  <form method="POST">
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" class="form-control" id="username" name="username" value="{{ user.user_name }}" readonly>
+    </div>
+    <div class="form-group">
+      <label for="role">Role:</label>
+      <select class="form-control" id="role" name="role">
+        <option value="1"{% if user.account_type == 1 %} selected{% endif %}>ADMIN</option>
+        <option value="2"{% if user.account_type == 2 %} selected{% endif %}>EDITOR</option>
+        <option value="3"{% if user.account_type == 3 %} selected{% endif %}>READER</option>
+        <option value="4"{% if user.account_type == 4 %} selected{% endif %}>BOT</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+{% endblock %}
